@@ -9,20 +9,6 @@ pipeline {
     
     agent any
     stages {
-	    
-	stage('Sonarqube') {
-    environment {
-        scannerHome = tool 'sonarqubescanner'
-    }
-    steps {
-        withSonarQubeEnv('sonarqube') {
-            sh "${scannerHome}/bin/sonar-scanner"
-        }
-        timeout(time: 10, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
-        }
-    }
-}
 
 	stage("Initial configs") {
 		steps {
@@ -32,7 +18,21 @@ pipeline {
 		}
 	}
 	    
-        stage('Test') {
+	stage('Sonarqube') {
+    		environment {
+        		scannerHome = tool 'sonarqubescanner'
+    		}
+    		steps {
+       			withSonarQubeEnv('sonarqube') {
+            			sh "${scannerHome}/bin/sonar-scanner"
+        		}
+        		timeout(time: 10, unit: 'MINUTES') {
+            			waitForQualityGate abortPipeline: true
+        		}
+    		}
+	}
+	    
+        stage('Unit Tests') {
             agent{
                 docker {
                     image 'node:12-alpine'
@@ -48,7 +48,7 @@ pipeline {
             }
         }
 	    
-        stage("DockerHub Connection") {
+        stage("DockerHub promotion") {
             steps {
                 echo "Init Clone Process"
                 git  "https://github.com/guiarese/users-api.git"
@@ -72,7 +72,7 @@ pipeline {
             }
         }
         
-        stage('Deliver') {
+        stage('Delivery - run service in production') {
             steps {
                 sh "docker run -d -p 3000:3000 $registryUrl:$BUILD_NUMBER"
 		sh "docker ps"
