@@ -18,6 +18,22 @@ pipeline {
 		}
 	}
 	    
+        stage('Test') {
+            agent{
+                docker {
+                    image 'node:12-alpine'
+                    args '-p 3000:3000 -p 5000:5000'
+                }
+            }
+            
+            steps {
+                sh "npm install"
+                sh "npm test"   
+		slackSend channel: '#users-api', 
+                          message: 'Testes unitários efetuados com sucesso'
+            }
+        }
+	    
         stage("DockerHub Connection") {
             steps {
                 echo "Init Clone Process"
@@ -39,22 +55,6 @@ pipeline {
 		slackSend channel: '#users-api', 
                           message: 'Deploy do container efetuado no docker hub'
 		    
-            }
-        }
-        
-        stage('Test') {
-            agent{
-                docker {
-                    image 'node:12-alpine'
-                    args '-p 3000:3000 -p 5000:5000'
-                }
-            }
-            
-            steps {
-                sh "npm install"
-                sh "npm test"   
-		slackSend channel: '#users-api', 
-                          message: 'Testes unitários efetuados com sucesso'
             }
         }
         
