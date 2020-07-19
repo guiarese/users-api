@@ -29,6 +29,8 @@ pipeline {
         		timeout(time: 10, unit: 'MINUTES') {
             			waitForQualityGate abortPipeline: true
         		}
+			slackSend channel: '#users-api', 
+                          message: 'Scanner do sonar já efetuado. Código sem problemas de duplicidade/vulnerabilidade/etc.'
     		}
 	}
 	    
