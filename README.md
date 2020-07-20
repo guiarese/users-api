@@ -149,3 +149,21 @@ pipeline {
     }
 }
 ```
+
+### Evidências
+
+* SonaQube
+![SonarQube.jpeg](../master/img/SonarQube.jpeg)
+* Slack
+![Slack](../master/img/Slack.jpeg)
+* DockerHub
+![DockerHub](../master/img/DockerHub.jpeg)
+* Jenkins - Status: Sucesso!
+![Jenkins](../master/img/Jenkins.jpeg)
+
+### Referências
+
+* **Webhook e Config do GitHubFlow:** https://github.com/FiapFullStack/pipelines/blob/master/flows/GITHUBFLOW.md
+* **Sonar:** https://medium.com/@rosaniline/setup-sonarqube-with-jenkins-declarative-pipeline-75bccdc9075f
+* **DockerHub:** https://appfleet.com/blog/building-docker-images-to-docker-hub-using-jenkins-pipelines/
+* **Slack:** https://levelup.gitconnected.com/send-slack-notifications-with-jenkins-f8e8b2d2e748
